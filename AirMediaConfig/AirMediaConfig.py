@@ -3,6 +3,9 @@ import paramiko
 import getpass
 import socket
 import sys
+import hashlib
+import base64
+import uuid
 
 def GetIP():
     print("What IP would you like to connect to:")
@@ -39,8 +42,15 @@ def GetADUsers():
     return ADUsers
 
 def GetSecret():
+    pwdHash = 'a0c5ad9a06d9a5c003dd94073b71aeaab480f4b2ec5e2de5a1943b291c02e459'
+    salt = uuid.uuid4().hex
     print("What is the password for AVServices")
-    return getpass.getpass(prompt="")
+    secret = getpass.getpass(prompt="")
+    hash = hashlib.sha256(secret.encode('utf-8') + salt.encode('utf-8')).hexdigest()
+    if hash == pwdHash:
+        return secret
+    else:
+        print("That password is incorrect")
 
 
 
@@ -167,5 +177,12 @@ def Main():
     input()
 
 
+def HashMaker():
+    
+
+    
+HashMaker()
+
+
 #Program Entrance    
-Main()
+#Main()
